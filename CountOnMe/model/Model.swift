@@ -1,5 +1,4 @@
 import Foundation
-
 protocol CalcInteractor {
     func onError(message: String)
     func onText(text: String)
@@ -26,7 +25,7 @@ class CalcModel {
     
     // Error check computed variables
     var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "*" && elements.last != "/"
+        return elements.last != "+" && elements.last != "-"
     }
     
     var expressionHaveEnoughElement: Bool {
@@ -34,7 +33,7 @@ class CalcModel {
     }
     
     var canAddOperator: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "*" && elements.last != "/"
+        return elements.last != "+" && elements.last != "-"
     }
     
     var expressionHaveResult: Bool {
@@ -44,8 +43,10 @@ class CalcModel {
     func tapped(number: String) {
         if expressionHaveResult {
             self.text = ""
+    
         }
         self.text.append(number)
+        
     }
     
     func tappedOpe(operand: String) {
@@ -66,7 +67,6 @@ class CalcModel {
             self.interactor.onError(message: "Démarrez un nouveau calcul !")
             return
         }
-        
         // Create local copy of operations
         var operationsToReduce = elements
         
@@ -80,20 +80,14 @@ class CalcModel {
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
-            case "*": result = left * right
-            case "/":
-                if right == 0 {
-                    self.interactor.onError(message: "Division par zéro !")
-                    return
-                }
-                result = left / right
-            default: fatalError("Opérateur inconnu !")
+            default: fatalError("Unknown operator !")
             }
             
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
+            
         }
-        
         self.text.append(" = \(operationsToReduce.first!)")
+        
     }
 }

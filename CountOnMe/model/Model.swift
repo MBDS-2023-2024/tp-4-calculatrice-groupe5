@@ -59,7 +59,7 @@ class CalcModel {
     
     func makeOperation() {
         guard expressionIsCorrect else {
-            self.interactor.onError(message: "Entrez une expression correcte !")
+            self.interactor.onError(message: "Entrez une expression valide !")
             return
         }
         
@@ -80,7 +80,7 @@ class CalcModel {
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
-            default: fatalError("Unknown operator !")
+            default: fatalError("Opérateur inconnu !")
             }
             
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
